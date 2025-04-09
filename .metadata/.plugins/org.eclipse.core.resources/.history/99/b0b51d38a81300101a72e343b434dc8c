@@ -1,0 +1,46 @@
+package com.infosys.expenseManagementApplication.service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.infosys.expenseManagementApplication.bean.Category;
+import com.infosys.expenseManagementApplication.bean.CustomerExpense;
+import com.infosys.expenseManagementApplication.bean.Expense;
+import com.infosys.expenseManagementApplication.dao.CategoryDao;
+import com.infosys.expenseManagementApplication.dao.ExpenseDao;
+
+@Service
+public class CustomerExpenseService {
+
+    @Autowired
+    private ExpenseDao expenseDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
+
+    public List<CustomerExpense> getCategorywiseCustomerExpense(String customerId) {
+        List<Expense> expenseList = expenseDao.getExpensesByCustomer(customerId);
+        HashMap<Long, Double> expenseMap = new HashMap<>();
+
+        for (Expense expense : expenseList) {
+            Long id = expense.getCategoryId();
+            Double amount = expense.getAmount();
+            expenseMap.put(id, expenseMap.getOrDefault(id, 0.0) + amount);
+        }
+
+        List<CustomerExpense> custExpList = new ArrayList<>();
+        for (Long categoryId : expenseMap.keySet()) {
+            Category category = categoryDao.getCategoryById(categoryId);
+            String categoryName = category != null ? category.getCategoryName() : "Unknown";
+            custExpList.add(new CustomerExpense(categoryId, categoryName, expenseMap.get(categoryId)));
+        }
+
+        return custExpList;
+    }
+
+}

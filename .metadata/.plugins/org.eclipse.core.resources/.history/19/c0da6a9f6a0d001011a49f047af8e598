@@ -1,0 +1,105 @@
+package com.infosys.expenseManagementApplication.bean;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class Expense {
+
+	
+	@Id
+	private String expenseId;//auto generated
+	
+    private String customerId;//auto assigned
+   
+    private Long categoryId;//auto assigned
+    
+    private double amount;
+    
+    private LocalDate date;//date picker
+    
+    private String description;
+
+	public Expense(String expenseId, String customerId, Long categoryId, double amount, LocalDate date,
+			String description) {
+		super();
+		this.expenseId = expenseId;
+		this.customerId = customerId;
+		this.categoryId = categoryId;
+		this.amount = amount;
+		this.date = date;
+		this.description = description;
+	}
+
+	public Expense() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getExpenseId() {
+		return expenseId;
+	}
+
+	public void setExpenseId(String expenseId) {
+		this.expenseId = expenseId;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String string) {
+		this.customerId = string;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "Expense [expenseId=" + expenseId + ", customerId=" + customerId + ", categoryId=" + categoryId
+				+ ", amount=" + amount + ", date=" + date + ", description=" + description + "]";
+	}
+
+	public void setUsername(String username) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+    
+    
+    
+}

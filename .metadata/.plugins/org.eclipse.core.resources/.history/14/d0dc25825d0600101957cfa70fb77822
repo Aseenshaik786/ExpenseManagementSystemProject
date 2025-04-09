@@ -1,0 +1,16 @@
+package com.infosys.expenseManagementApplication.dao;
+
+import java.util.List;
+
+import com.infosys.expenseManagementApplication.bean.Expense;
+
+public interface ExpenseDao {
+
+public Expense getExpenseById(String id);
+	
+	public List<Expense> getAllExpenses();
+	public void  save(Expense expense);
+	public String generateExpenseId();
+	
+	
+}

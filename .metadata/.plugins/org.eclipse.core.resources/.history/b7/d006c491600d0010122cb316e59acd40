@@ -1,0 +1,99 @@
+package com.infosys.expenseManagementApplication.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+import com.infosys.expenseManagementApplication.bean.Customer;
+import com.infosys.expenseManagementApplication.bean.Expense;
+
+@Service
+@Repository
+public class ExpenseDaoImpl implements ExpenseDao {
+    
+    @Autowired
+    private ExpenseRepository repository;
+    
+    @Autowired
+    private CustomerRepository customerRepository;
+
+   
+
+    @Override
+    public Expense getExpenseById(String id) {
+        Optional<Expense> expense = repository.findById(id);
+        return expense.orElse(null);
+    }
+    
+    @Override
+    public List<Expense> getAllExpenses() {
+        return repository.findAll();
+    }
+    
+    @Override
+    public void save(Expense expense) {
+        if (expense.getExpenseId() == null || expense.getExpenseId().isEmpty()) {
+            expense.setExpenseId(generateExpenseById());
+        }
+
+        
+        String username = "testUser"; 
+        Customer customer = customerRepository.getCustomerByUsername(username);
+        if (customer != null) {
+            expense.setCustomerId(customer.getCustomerId());
+        } else {
+            throw new RuntimeException("Customer not found for username: " + username);
+        }
+
+     
+
+        repository.save(expense);
+    }
+
+    
+    @Override
+    public String generateExpenseById() {
+        Long id = 0L;
+        String val = repository.getMaxId();
+        
+        System.out.println("Max Expense ID from DB: " + val); 
+        
+        if (val == null) {
+            id = 1000001L; 
+        } else {
+            try {
+                id = Long.parseLong(val.substring(1)); 
+                id++;
+            } catch (NumberFormatException e) {
+                System.out.println("Error parsing Expense ID: " + e.getMessage());
+                id = 1000001L; // Default value
+            }
+        }
+        
+        String newId = "EX" + id;
+        System.out.println("Generated Expense ID: " + newId); 
+        
+        return newId;
+    }
+
+	@Override
+	public List<Expense> getExpensesByCategory(Long categoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Expense> getExpensesByCustomer(String customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteExpenseById(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+}

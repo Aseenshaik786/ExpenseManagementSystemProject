@@ -28,9 +28,23 @@ const ExpenseBarChart = () => {
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [error, setError] = useState("");
+
+  const validateDates = () => {
+    if (!startDate || !endDate) {
+      setError("Both start and end dates are required.");
+      return false;
+    }
+    if (new Date(endDate) < new Date(startDate)) {
+      setError("End date cannot be earlier than start date.");
+      return false;
+    }
+    setError(""); // Clear error if validation passes
+    return true;
+  };
 
   const fetchData = () => {
-    if (!startDate || !endDate) return;
+    if (!validateDates()) return;
 
     fetch(`http://localhost:9797/exp-mng/expense-total-range?startDate=${startDate}&endDate=${endDate}`)
       .then((response) => response.json())
@@ -160,6 +174,7 @@ const ExpenseBarChart = () => {
               Fetch Data
             </button>
           </div>
+          {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
           <div style={{ width: "100%", maxWidth: "500px" }}>
             <Bar
               data={chartData}

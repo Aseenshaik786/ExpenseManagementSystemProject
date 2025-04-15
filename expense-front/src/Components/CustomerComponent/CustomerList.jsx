@@ -29,7 +29,7 @@ const CustomerList = () => {
   };
 
   const filteredCustomers = customers.filter((customer) =>
-    (customer.customername || "").toLowerCase().includes(search.toLowerCase())
+    (customer.customerName || "").toLowerCase().includes(search.toLowerCase())
   );
 
   return (
